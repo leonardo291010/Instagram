@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGNOTO // Archivio Riservato</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #080808;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: #111111;
+            border: 1px solid #262626;
+            border-radius: 10px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.15);
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(229, 9, 20, 0.15);
+            color: #ff2a2a;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        h1 {
+            font-size: 26px;
+            letter-spacing: 4px;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        p.desc {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+        input {
+            width: 100%;
+            padding: 13px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ff2a2a;
+        }
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #d90429;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        button:active {
+            background: #a0031e;
+        }
+        .hidden { display: none; }
+        .loader {
+            font-size: 13px;
+            color: #ff2a2a;
+            margin: 20px 0;
+        }
+        .alert-box {
+            border: 1px solid #ff2a2a;
+            background: rgba(255, 42, 42, 0.08);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .alert-title {
+            color: #ff2a2a;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .prank-reveal {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCHERMATA 1: INSERIMENTO -->
+    <div class="container" id="step1">
+        <div class="badge">CONNESSIONE CRIPTATA</div>
+        <h1>IGNOTO</h1>
+        <p class="desc">Verifica se il tuo profilo compare nei file estratti dal gruppo. Inserisci il tuo username per avviare la ricerca.</p>
+        <input type="text" id="targetUser" placeholder="@username o nome">
+        <button onclick="avviaScansione()">VERIFICA ORA</button>
+    </div>
+
+    <!-- SCHERMATA 2: FINTO CARICAMENTO -->
+    <div class="container hidden" id="step2">
+        <div class="badge">ELABORAZIONE...</div>
+        <h1>IGNOTO</h1>
+        <p class="loader" id="loadingText">Connessione al nodo in corso...</p>
+    </div>
+
+    <!-- SCHERMATA 3: RISULTATO PRANK -->
+    <div class="container hidden" id="step3">
+        <div class="badge">OPERAZIONE COMPLETATA</div>
+        <h1>SISTEMA SYNC</h1>
+        <div class="alert-box">
+            <div class="alert-title">⚠️ PROFILO REGISTRATO</div>
+            <p style="font-size: 12px; color: #ddd; line-height: 1.5;" id="resultText"></p>
+        </div>
+        <p class="prank-reveal">Nessun dato è stato realmente toccato.<br>Ci sei cascato in pieno! 😂</p>
+    </div>
+
+    <script>
+        function avviaScansione() {
+            const user = document.getElementById('targetUser').value.trim();
+            if (!user) {
+                alert("Inserisci un nome o username prima di procedere.");
+                return;
+            }
+
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+
+            const messaggi = [
+                "Ricerca utente " + user + "...",
+                "Estrazione metadati dispositivo...",
+                "Sincronizzazione archivio completata..."
+            ];
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < messaggi.length) {
+                    document.getElementById('loadingText').innerText = messaggi[i];
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    mostraRisultato(user);
+                }
+            }, 900);
+        }
+
+        function mostraRisultato(user) {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('resultText').innerHTML =
+                "L'identificativo <b>" + user.replace(/</g, "&lt;") + "</b> è stato collegato al database di Ignoto.<br>Sincronizzazione sessione completata.";
+        }
+    </script>
+
+</body>
+</html>
